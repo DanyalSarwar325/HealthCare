@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-
+import Navbar from "@/app/components/Navbar/page"
 export const metadata: Metadata = {
   title: "Prescripto",
   description: "Healthcare platform",
