@@ -1,7 +1,7 @@
 "use client";
 import { Mail, Phone } from "lucide-react";
 
-export default function Footer() {
+export const FooterPage=()=> {
   return (
     <footer className="bg-white text-gray-700 border-t mt-10">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">

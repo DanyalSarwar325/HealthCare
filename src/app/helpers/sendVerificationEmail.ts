@@ -21,12 +21,12 @@ export async function SendVerificationEmail(
             message:"Failed to send Verification code"
           }
         
-    } catch (err) {
-        console.log("Failed to send Verification code",err)
-        return{
-            success:false,
-            message:"Failed to send Verification code"
-        }
+    } catch (err:any) {
+        console.error("Resend error:", err);
+  return {
+    success: false,
+    message: err.message || "Failed to send Verification code"
+  };
     }
 
 }
