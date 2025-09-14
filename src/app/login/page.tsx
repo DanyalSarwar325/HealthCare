@@ -1,21 +1,13 @@
-// app/login/page.tsx (Next.js 13+ App Router)
-// or pages/login.tsx (Next.js 12 Pages Router)
-
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-
-
 export default function LoginPage() {
-     const router=useRouter();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
- 
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,25 +17,31 @@ export default function LoginPage() {
     try {
       const res = await fetch("/api/signIn", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-    
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      })
-      console.log(res);
+      });
 
-      if (res.ok) {
+      const data = await res.json();
+      console.log("Login response:", data);
+
+      if (res.ok && data.success) {
         setMessage("✅ Login successful!");
         setEmail("");
         setPassword("");
-        // redirect logic can go here, e.g. router.push("/dashboard")
-        router.push("/home")
+
+        // ✅ Save user to localStorage
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // ✅ Dispatch event so Navbar updates instantly
+        window.dispatchEvent(new Event("userUpdated"));
+
+        // ✅ Redirect after login
+        router.push("/home");
       } else {
-        const data = await res.json();
-        setMessage(`❌ ${data.error || "Invalid credentials"}`);
+        setMessage(`❌ ${data.message || "Invalid credentials"}`);
       }
     } catch (err) {
+      console.error("Login error:", err);
       setMessage("❌ Network error!");
     } finally {
       setLoading(false);

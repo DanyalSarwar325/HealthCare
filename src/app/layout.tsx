@@ -3,6 +3,7 @@ import "./globals.css";
 import { Nunito } from "next/font/google";
 import {FooterPage} from "@/app/components/footer"
 
+
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "600", "700"], // pick weights you need
@@ -10,6 +11,7 @@ const nunito = Nunito({
 
 import AuthProvider from "@/context/AuthProvider";
 import { Navbar } from "./components/Navbar";
+
 export const metadata: Metadata = {
   title: "Prescripto",
   description: "Healthcare platform",
@@ -18,15 +20,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <AuthProvider>
+      
+    
+        
       <body className="{nunito.classname}">
-
+  <AuthProvider>
         <Navbar />
         {children}
         <FooterPage/>
       
-      </body>
+   
       </AuthProvider>
+         </body>
     </html>
   );
 }

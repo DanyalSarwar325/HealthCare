@@ -1,56 +1,54 @@
 import { match } from "assert";
+import { time } from "console";
+import { Phone } from "lucide-react";
 import mongoose,{Schema,Document} from "mongoose";
+import { number } from "zod";
 
-export interface Message extends Document{
-    createdAt:Date,
-    content:string
 
-}
 
-const MessageSchema:Schema<Message>=new Schema({
-    createdAt:{
-        type:Date,
-        default:Date.now
-    },
-    content:{
-        type:String
-    }
-});
+
 export  interface User  extends Document{
     username:string,
     email:string,
     password:string,
-    // expiryDate?:string
-    // verifyCode?:string
-    // isVerified?:boolean
-    // messages?:Message[]
+    Phone?:number,
+    Gender?:string,
+    Address?:string,
 
+ 
 }
 
 const UserSchema=new mongoose.Schema({
     username:{
-        type:String
-      
-
+        type:String,
+        required:[true,"Username is required"],
+        trim:true
     },
     email:{
         type:String,
-        // required:[true,"Email is required"],
+         required:[true,"Email is required"],
         match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter Valid Email"]
     },
     password:{
         type:String,
-        // required:[true,"Password is required"],
+        required:[true,"Password is required"],
         trim:true
+    },
+    Phone:{
+        type:Number,
+        match:[/^\+?[1-9]\d{1,14}$/,"Enter Valid Phone Number"]
+    },
+    Gender:{
+        type:String,
+        enum:["Male","Female"]
+    },
+    Address:{
+        type:String,
+        // required:[true,"Address is required"]
     }
-    //  isVerified:{
-    //     type:Boolean,
-    //     default:false
-    //  },
-    // messages:{
-    //     type:[MessageSchema]
-    // }
-})
+
+   
+},{timestamps:true}); 
 
 const UserModel=(mongoose.models.User as mongoose.Model<User> )|| (mongoose.model<User>("User",UserSchema))
 export default UserModel;

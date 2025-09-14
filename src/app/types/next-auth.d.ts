@@ -27,3 +27,14 @@ declare module 'next-auth/jwt' {
 
     }
 }
+
+
+type Doctor = {
+  _id: string;
+  name: string;
+  Specialization: string;
+  description: string;
+  appointmentFee: string;
+  image: string;
+  availability: boolean;
+};

@@ -2,6 +2,7 @@ import UserModel from "@/app/models/User";
 import bcrypt from "bcryptjs";
 import DbConnect from "@/app/lib/dbConnect";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
   try {
@@ -24,7 +25,20 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json(
+    // Create JWT token
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        
+      },
+      process.env.NEXTAUTH_SECRET || "fallback-secret",
+      { expiresIn: "24h" }
+    );
+
+    // Prepare response
+    const response = NextResponse.json(
       {
         success: true,
         message: "Login successful",
@@ -37,13 +51,16 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-    // If you want to add verification:
-    // if (!user.isVerified) {
-    //   return NextResponse.json(
-    //     { success: false, message: "Please verify your account" },
-    //     { status: 403 }
-    //   );
-    // }
+    // Attach cookie
+    response.cookies.set("auth-token", token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60, // 24 hours
+      path: "/", // available everywhere
+    });
+
+    return response;
   } catch (error: any) {
     return NextResponse.json(
       {
