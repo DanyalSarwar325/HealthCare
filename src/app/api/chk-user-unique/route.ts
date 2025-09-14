@@ -1,7 +1,7 @@
 import UserModel from "@/app/models/User";
 import {z} from "zod"
 import {UserNameValidation} from "@/app/schemas/signUpSchema"
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import DbConnect from "@/app/lib/dbConnect";
 
 
@@ -20,7 +20,7 @@ export async function GET(req:Request){
     const result=UserQuerySchema.safeParse(queryParams)
     console.log(result)
     if(!result.success){
-       const UserNameErrors=result.error.format().username?._errors||[]
+       
        return NextResponse.json({
         success:false,
         message:"Invalid username"

@@ -1,8 +1,13 @@
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcryptjs";
 import DbConnect from "@/app/lib/dbConnect";
-import UserModel from "@/app/models/User";
+import UserModel, { IUser } from "@/app/models/User";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+interface Credentials {
+  email: string;
+  password: string;
+}
 
 export const authOption: NextAuthOptions = {
   providers: [
@@ -13,36 +18,26 @@ export const authOption: NextAuthOptions = {
         email: { label: "Email or Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials: Credentials | undefined): Promise<IUser | null> {
         await DbConnect();
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error("Missing credentials");
-          }
-
-          // Find user by email OR username
-          const user = await UserModel.findOne({
-            $or: [{ email: credentials.email }, { username: credentials.email }],
-          });
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          // Compare password
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          if (!isPasswordValid) {
-            throw new Error("Incorrect Password");
-          }
-
-          return user;
-        } catch (error: any) {
-          throw new Error(error.message || "Invalid Credentials");
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing credentials");
         }
+
+        const user = await UserModel.findOne({
+          $or: [{ email: credentials.email }, { username: credentials.email }],
+        }) as IUser | null;
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isPasswordValid) {
+          throw new Error("Incorrect Password");
+        }
+
+        return user;
       },
     }),
   ],
@@ -50,11 +45,12 @@ export const authOption: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = (user as any)._id?.toString();
-        token.username = (user as any).username;
-        token.isVerified = (user as any).isVerified;
-        token.isAcceptingMessages = (user as any).isAcceptingMessages;
-        token.email = (user as any).email;
+        const u = user as IUser;
+        token._id = u._id.toString();
+        token.username = u.username;
+        token.isVerified = u.isVerified;
+        token.isAcceptingMessages = u.isAcceptingMessages;
+        token.email = u.email;
       }
       return token;
     },
@@ -62,11 +58,11 @@ export const authOption: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user = {
-          _id: token._id as string,
-          username: token.username as string,
-          isVerified: token.isVerified as boolean,
-          isAcceptingMessages: token.isAcceptingMessages as boolean,
-          email: token.email as string,
+          _id: token._id!,
+          username: token.username!,
+          isVerified: token.isVerified!,
+          isAcceptingMessages: token.isAcceptingMessages!,
+          email: token.email!,
         };
       }
       return session;
@@ -76,12 +72,11 @@ export const authOption: NextAuthOptions = {
   pages: {
     signIn: "/signIn",
     signOut: "/signOut",
-    
   },
 
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60, // ⏰ 30 minutes
+    maxAge: 30 * 60, // 30 minutes
   },
 
   secret: process.env.NEXT_AUTH_SECRET,

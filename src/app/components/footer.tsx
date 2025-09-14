@@ -26,10 +26,10 @@ export const FooterPage=()=> {
         <div>
           <h3 className="font-semibold text-gray-900 mb-4">COMPANY</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-blue-600">Home</a></li>
-            <li><a href="#" className="hover:text-blue-600">About us</a></li>
-            <li><a href="#" className="hover:text-blue-600">Delivery</a></li>
-            <li><a href="#" className="hover:text-blue-600">Privacy policy</a></li>
+            <li><a href="/home" className="hover:text-blue-600">Home</a></li>
+            <li><a href="/about" className="hover:text-blue-600">About us</a></li>
+            <li><a href="/contact" className="hover:text-blue-600">Contact Us</a></li>
+            <li><a href="/doctors" className="hover:text-blue-600">Doctors</a></li>
           </ul>
         </div>
 

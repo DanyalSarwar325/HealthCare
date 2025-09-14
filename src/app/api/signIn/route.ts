@@ -61,12 +61,13 @@ export async function POST(request: Request) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
+     let message = "Error occurred during login";
     return NextResponse.json(
       {
         success: false,
-        message: "Error occurred during login",
-        error: error.message,
+        message: message,
+        
       },
       { status: 500 }
     );

@@ -62,7 +62,7 @@ export default function ProfilePage() {
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewImage(reader.result as string);
-      setProfile({ ...profile, image: reader.result }); // save base64 in state
+      setProfile({ ...profile }); // save base64 in state
     };
     reader.readAsDataURL(file);
   };
@@ -71,6 +71,7 @@ export default function ProfilePage() {
   const handleToggleEdit = async () => {
     if (isEditing) {
       try {
+        console.log("Saving profile:", profile);
         const res = await fetch("/api/profile", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

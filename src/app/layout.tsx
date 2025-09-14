@@ -4,10 +4,7 @@ import { Nunito } from "next/font/google";
 import {FooterPage} from "@/app/components/footer"
 
 
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"], // pick weights you need
-});
+
 
 import AuthProvider from "@/context/AuthProvider";
 import { Navbar } from "./components/Navbar";

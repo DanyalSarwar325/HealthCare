@@ -21,7 +21,7 @@ async function DbConnect():Promise<void>{
        connection.isConnected=db.connections[0].readyState
          console.log("DB connected Sucessfully")
     
-    } catch (error) {
+    } catch (error:unknown) {
          console.log(" Error occurred while connecting to MongoDB")
 process.exit(1)
          

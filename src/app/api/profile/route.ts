@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import DbConnect from "@/app/lib/dbConnect";
 import UserModel from "@/app/models/User";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth-token")?.value;

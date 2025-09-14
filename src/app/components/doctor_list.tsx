@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const doctors = [
   { id: 1, name: "Dr. Richard James", specialty: "General physician", availability: true, image: "/frontend/doc1.png" },
@@ -36,7 +37,7 @@ export const DoctorsList = () => {
             onClick={() => handleDoctorClick(doc)}
           >
             <div className="h-56 flex items-center justify-center bg-gray-50">
-              <img
+              <Image
                 src=
            {doc.image}
                 alt={doc.name}

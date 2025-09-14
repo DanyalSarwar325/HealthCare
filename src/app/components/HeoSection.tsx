@@ -1,6 +1,7 @@
 // components/HeroSection.tsx
 "use client";
 
+import Image from "next/image";
 export const HeroSection = () => {
   return (
     <section className="w-[90%] bg-[#5A6CF3] rounded-2xl flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-12 m-auto mt-10">
@@ -18,17 +19,17 @@ export const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center gap-4 justify-center md:justify-start">
           {/* Example profile avatars */}
           <div className="flex -space-x-3">
-            <img
+            <Image
               src="/avatars/doc1.jpg"
               alt="Doctor 1"
               className="w-10 h-10 rounded-full border-2 border-white"
             />
-            <img
+            <Image
               src="/avatars/doc2.jpg"
               alt="Doctor 2"
               className="w-10 h-10 rounded-full border-2 border-white"
             />
-            <img
+            <Image
               src="/avatars/doc3.jpg"
               alt="Doctor 3"
               className="w-10 h-10 rounded-full border-2 border-white"

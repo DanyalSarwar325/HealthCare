@@ -6,19 +6,25 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, User } from "lucide-react";
 import { Nunito } from "next/font/google";
-import { is } from "zod/locales";
+
 
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
 });
 
+interface User {
+  _id: string;
+  username: string;
+  email: string;
+}
+
 export const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User|null>(null);
   const [loading, setLoading] = useState(true);
 
   // ✅ Fetch user once on mount

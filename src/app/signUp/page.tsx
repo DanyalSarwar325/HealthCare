@@ -35,8 +35,8 @@ export default function SignupPage() {
         console.log(data)
         setMessage(`❌ Error: ${data.message || "Something went wrong"}`);
       }
-    } catch (err) {
-      setMessage("❌ Network error!");
+    } catch (err:unknown) {
+      setMessage(`❌ Network error! ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
