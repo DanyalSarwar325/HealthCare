@@ -3,17 +3,26 @@
 import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
+interface Profile {
+  username: string;
+  email: string;
+  phone: string;
+  address: string;
+  gender: string;
+ 
+}
+
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [profile, setProfile] = useState<any>({
+  const [profile, setProfile] = useState<Profile>({
     username: "",
     email: "",
     phone: "",
     address: "",
-    gender: "",
-    image: "",
+    gender: ""
+    
   });
 
   // ✅ Fetch profile when page loads

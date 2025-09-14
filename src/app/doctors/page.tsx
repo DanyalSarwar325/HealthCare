@@ -3,7 +3,7 @@
 import Link from "next/link"; // ✅ Correct import
 import React, { useEffect, useState } from "react";
 import DoctorModel from "../models/Doctor";
-
+import Image from "next/image";
 
 
 const doctorsData = [
@@ -105,7 +105,7 @@ export default function DoctorsPage() {
           {filteredDoctors.map((doc) => (
             <Link key={doc._id} href={`/doctorDetails/${doc._id}`}>
               <div className="border rounded-lg shadow-sm p-4 hover:shadow-lg transition cursor-pointer">
-                <img
+                <Image
                   src={doc.image}
                   alt={doc.name}
                   className="w-full h-52 object-contain rounded-md mb-3 bg-gray-50"

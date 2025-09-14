@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 type Doctor = {
   _id: string;
@@ -63,7 +64,7 @@ export default function DoctorDetails() {
     <div className="flex flex-col items-center px-4 py-8 md:flex-row md:items-start md:gap-6 lg:px-16">
       {/* Doctor Image */}
       <div className="flex-shrink-0 w-full md:w-1/3">
-        <img
+        <Image
           src={doctor.image}
           alt={doctor.name}
           className="rounded-2xl object-cover w-full h-[300px] md:h-[400px]"
